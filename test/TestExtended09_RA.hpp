@@ -30,7 +30,6 @@ struct coordinateV_st
     double V;
 };
 
-
 class ICCCellFactory : public AbstractCardiacCellFactory<3>
 {
 
@@ -205,7 +204,6 @@ private:
         ICCCellFactory tissueICCInfo;
         SMCCellFactory tissueSMCInfo;
 
-
         ExtendedBidomainProblem<3> extended_problem(&tissueICCInfo, &tissueSMCInfo);
 
         HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.000003, 0.5, 0.003));/*(0.03, 3.4, 1.0));*/
@@ -237,5 +235,4 @@ private:
         HeartEventHandler::Report();
     }
 };
-
 #endif
