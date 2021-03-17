@@ -4,6 +4,7 @@
 #include <cxxtest/TestSuite.h>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
+
 #include "../src/CellICCBioPhy.hpp"
 #include "DistributedTetrahedralMesh.hpp"
 #include "AbstractStimulusFactory.hpp"
@@ -175,7 +176,7 @@ private:
         assert(mpi_ret_2 == MPI_SUCCESS);
         assert(mpi_ret_3 == MPI_SUCCESS);
 
-        HeartConfig::Instance()->SetSimulationDuration(80000);
+        HeartConfig::Instance()->SetSimulationDuration(20000);
         p_problem->Solve();
         delete p_problem;
     }
@@ -184,19 +185,19 @@ private:
     void Extended() //throw (Exception)
     {
         HeartConfig::Instance()->Reset();
-        HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,1,500);
+        HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,1,1000);
         HeartConfig::Instance()->SetKSPSolver("gmres");
         HeartConfig::Instance()->SetUseAbsoluteTolerance(2e-1);
         HeartConfig::Instance()->SetKSPPreconditioner("jacobi");
 
-        HeartConfig::Instance()->SetSimulationDuration(10000);  //ms.
+        HeartConfig::Instance()->SetSimulationDuration(20000);  //ms.
 
         /** Output visualization options, we ask for meshalyzer and cmgui **/
         HeartConfig::Instance()->SetVisualizeWithCmgui(false);
         HeartConfig::Instance()->SetVisualizeWithMeshalyzer(true);
         HeartConfig::Instance()->SetVisualizeWithVtk(false);
 
-        HeartConfig::Instance()->SetOutputDirectory("Stomach3D");
+        HeartConfig::Instance()->SetOutputDirectory("Stomach3D_dt1000ms_20s");
         HeartConfig::Instance()->SetOutputFilenamePrefix("results");
 
         HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/H09ext_4_4_1.1", cp::media_type::Orthotropic);
