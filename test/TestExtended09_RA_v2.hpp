@@ -97,14 +97,14 @@ public:
       	cell->SetParameter("V_excitation", -55);
       	cell->SetParameter("live_time", 12000);
 
-        if (V_val > -100)
+        if (V_val > 110)
         {
             return new CellDummyCellFromCellML(mpSolver, mpZeroStimulus);
         }
 
         //ChastePoint<3> centre(7.24767, -2.34362, -1.79832);
         ChastePoint<3> centre(0.2929, -7.944, -16.01);
-        ChastePoint<3> radii (0.1, 0.1, 0.1);
+        ChastePoint<3> radii (0.5, 0.5, 0.5);
         ChasteEllipsoid<3> ellipseRegion(centre, radii);
         ChastePoint<3> myPoint(x, y, z);
 
