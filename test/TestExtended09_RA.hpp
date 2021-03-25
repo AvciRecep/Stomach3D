@@ -197,7 +197,11 @@ private:
         HeartConfig::Instance()->SetVisualizeWithMeshalyzer(true);
         HeartConfig::Instance()->SetVisualizeWithVtk(false);
 
+<<<<<<< HEAD
         HeartConfig::Instance()->SetOutputDirectory("Stomach3D_dt1000ms_10s");
+=======
+        HeartConfig::Instance()->SetOutputDirectory("Stomach3D_dt1000ms_10s");
+>>>>>>> ef94166b8de3f63d408364ed2d1d961fb850bfd4
         HeartConfig::Instance()->SetOutputFilenamePrefix("results");
 
         HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/H09ext_4_4_1.1", cp::media_type::Orthotropic);
