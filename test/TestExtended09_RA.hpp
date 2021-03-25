@@ -197,10 +197,10 @@ private:
         HeartConfig::Instance()->SetVisualizeWithMeshalyzer(true);
         HeartConfig::Instance()->SetVisualizeWithVtk(false);
 
-        HeartConfig::Instance()->SetOutputDirectory("Stomach3D_dt1000ms_10s_v1");
+        HeartConfig::Instance()->SetOutputDirectory("Stomach3D_dt1000ms_10s_v3");
         HeartConfig::Instance()->SetOutputFilenamePrefix("results");
 
-        HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/H09ext_4_4_1.1", cp::media_type::Orthotropic);
+        HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/H09ext_4_4_1.1");
 
         ICCCellFactory tissueICCInfo;
         SMCCellFactory tissueSMCInfo;
@@ -209,6 +209,8 @@ private:
 
         HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.000003, 0.5, 0.003));/*(0.03, 3.4, 1.0));*/
         HeartConfig::Instance()->SetExtracellularConductivities(Create_c_vector(0.000003, 0.5, 0.003));/*(0.03, 3.4, 1.0));*/
+        //HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.5, 0.000003, 0.003));/*(0.03, 3.4, 1.0));*/
+        //HeartConfig::Instance()->SetExtracellularConductivities(Create_c_vector(0.5, 0.000003, 0.003));/*(0.03, 3.4, 1.0));*/
 
         double Am_icc = 2000.0;
         double Am_smc = 1000.0;
@@ -219,6 +221,7 @@ private:
 
         extended_problem.SetExtendedBidomainParameters(Am_icc,Am_smc, Am_gap, Cm_icc, Cm_smc, G_gap);
         extended_problem.SetIntracellularConductivitiesForSecondCell(Create_c_vector(0.000003, 0.5, 0.0003));/*(0.02, 3.4, 1.0));*/
+        //extended_problem.SetIntracellularConductivitiesForSecondCell(Create_c_vector(0.5, 0.000003, 0.0003));/*(0.02, 3.4, 1.0));*/
 
         extended_problem.Initialise();
         extended_problem.Solve();
