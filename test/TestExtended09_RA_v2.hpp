@@ -102,8 +102,8 @@ public:
             return new CellDummyCellFromCellML(mpSolver, mpZeroStimulus);
         }
 
-        //ChastePoint<3> centre(7.24767, -2.34362, -1.79832);
-        ChastePoint<3> centre(0.2929, -7.944, -16.01);
+        //ChastePoint<3> centre(7.24767, -2.34362, -1.79832); // for human stomach H09ext file
+        ChastePoint<3> centre(0.2929, -7.944, -16.01); // Approximately chosen from rat stomach mesh. Potentially needs more accurate position.
         ChastePoint<3> radii (0.5, 0.5, 0.5);
         ChasteEllipsoid<3> ellipseRegion(centre, radii);
         ChastePoint<3> myPoint(x, y, z);
