@@ -182,6 +182,7 @@ private:
 private:
     void Extended() //throw (Exception)
     {
+        /*
         HeartConfig::Instance()->Reset();
         HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,1,1000);
         HeartConfig::Instance()->SetKSPSolver("gmres");
@@ -190,7 +191,7 @@ private:
 
         HeartConfig::Instance()->SetSimulationDuration(10000);  //ms.
 
-        /** Output visualization options, we ask for meshalyzer and cmgui **/
+        // Output visualization options, we ask for meshalyzer and cmgui
         HeartConfig::Instance()->SetVisualizeWithCmgui(false);
         HeartConfig::Instance()->SetVisualizeWithMeshalyzer(true);
         HeartConfig::Instance()->SetVisualizeWithVtk(false);
@@ -206,8 +207,8 @@ private:
 
         ExtendedBidomainProblem<3> extended_problem(&tissueICCInfo, &tissueSMCInfo);
 
-        HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.000003, 0.5, 0.003));/*(0.03, 3.4, 1.0));*/
-        HeartConfig::Instance()->SetExtracellularConductivities(Create_c_vector(0.000003, 0.5, 0.003));/*(0.03, 3.4, 1.0));*/
+        HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.000003, 0.5, 0.003));//(0.03, 3.4, 1.0));
+        HeartConfig::Instance()->SetExtracellularConductivities(Create_c_vector(0.000003, 0.5, 0.003));//(0.03, 3.4, 1.0));
 
         double Am_icc = 2000.0;
         double Am_smc = 1000.0;
@@ -217,12 +218,12 @@ private:
         double G_gap = 20.0;
 
         extended_problem.SetExtendedBidomainParameters(Am_icc,Am_smc, Am_gap, Cm_icc, Cm_smc, G_gap);
-        extended_problem.SetIntracellularConductivitiesForSecondCell(Create_c_vector(0.000003, 0.5, 0.0003));/*(0.02, 3.4, 1.0));*/
+        extended_problem.SetIntracellularConductivitiesForSecondCell(Create_c_vector(0.000003, 0.5, 0.0003));//(0.02, 3.4, 1.0));
 
         extended_problem.Initialise();
         extended_problem.Solve();
 
-        /* CheckPoint the simulation */
+        // CheckPoint the simulation
         FileFinder archive_dir("Extended", RelativeTo::ChasteTestOutput);
         std::string archive_file = "extended.arch";
         ArchiveOpener<boost::archive::text_oarchive, std::ofstream> arch_opener(archive_dir, archive_file);
@@ -233,6 +234,7 @@ private:
 
         HeartEventHandler::Headings();
         HeartEventHandler::Report();
+        */
     }
 };
 #endif

@@ -1,3 +1,2 @@
-TestExtended09_RA.hpp
-TestExtended09_RA_v2.hpp
-TestSolveLaplaceForCircum_RA.hpp
+TestExtended09_Human.hpp
+TestExtended09_Rat.hpp
