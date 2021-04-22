@@ -46,7 +46,7 @@ public:
 
     void ReadLaplaceFile()
     {
-        std::ifstream inLaplaceInfo("projects/Stomach3D/src/linear_solution_longi_rat_nolayer_8_8_1.1.txt");
+        std::ifstream inLaplaceInfo("projects/Stomach3D/src/");
         if(!inLaplaceInfo)
         {
             EXCEPTION("Reading laplace solution error");
