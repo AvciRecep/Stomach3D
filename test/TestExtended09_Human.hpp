@@ -105,7 +105,9 @@ public:
       	//double delx = 0.1;
         //double delz = 0.1;
         //double dely = 0.1;
-        ChastePoint<3> centre(7.24767, -2.34362, -1.79832);
+        
+        // ChastePoint<3> centre(7.24767, -2.34362, -1.79832); // upper corpus normal pacemaker
+        ChastePoint<3> centre(0.202278, -8.45307, -5.37112); // ectopic, distal antrum
         ChastePoint<3> radii (0.1, 0.1, 0.1);
         ChasteEllipsoid<3> ellipseRegion(centre, radii);
         ChastePoint<3> myPoint(x, y, z);
