@@ -210,10 +210,10 @@ private:
 
         ExtendedBidomainProblem<3> extended_problem(&tissueICCInfo, &tissueSMCInfo);
 
-        HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.000003, 0.5, 0.003));/*(0.03, 3.4, 1.0));
-        HeartConfig::Instance()->SetExtracellularConductivities(Create_c_vector(0.000003, 0.5, 0.003));/*(0.03, 3.4, 1.0));
-        //HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.5, 0.000003, 0.003));/*(0.03, 3.4, 1.0));
-        //HeartConfig::Instance()->SetExtracellularConductivities(Create_c_vector(0.5, 0.000003, 0.003));/*(0.03, 3.4, 1.0));
+        HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.000003, 0.5, 0.003));//(0.03, 3.4, 1.0));
+        HeartConfig::Instance()->SetExtracellularConductivities(Create_c_vector(0.000003, 0.5, 0.003));//(0.03, 3.4, 1.0));
+        //HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.5, 0.000003, 0.003));//(0.03, 3.4, 1.0));
+        //HeartConfig::Instance()->SetExtracellularConductivities(Create_c_vector(0.5, 0.000003, 0.003));//(0.03, 3.4, 1.0));
 
         double Am_icc = 2000.0;
         double Am_smc = 1000.0;
@@ -223,8 +223,8 @@ private:
         double G_gap = 20.0;
 
         extended_problem.SetExtendedBidomainParameters(Am_icc,Am_smc, Am_gap, Cm_icc, Cm_smc, G_gap);
-        extended_problem.SetIntracellularConductivitiesForSecondCell(Create_c_vector(0.000003, 0.5, 0.0003));/*(0.02, 3.4, 1.0));
-        //extended_problem.SetIntracellularConductivitiesForSecondCell(Create_c_vector(0.5, 0.000003, 0.0003));/*(0.02, 3.4, 1.0));
+        extended_problem.SetIntracellularConductivitiesForSecondCell(Create_c_vector(0.000003, 0.5, 0.0003));//(0.02, 3.4, 1.0));
+        //extended_problem.SetIntracellularConductivitiesForSecondCell(Create_c_vector(0.5, 0.000003, 0.0003));//(0.02, 3.4, 1.0));
 
         extended_problem.Initialise();
         extended_problem.Solve();
