@@ -103,8 +103,8 @@ public:
         }
 
         //ChastePoint<3> centre(7.24767, -2.34362, -1.79832); // for human stomach H09ext file
-        ChastePoint<3> centre(0.0135, 0.9818, -4.08); // for rat stomach mesh.
-        ChastePoint<3> radii (1, 1, 1);
+        ChastePoint<3> centre(0.03399, -1.038, -1.824); // for rat stomach mesh.
+        ChastePoint<3> radii (0.5, 0.5, 0.5);
         ChasteEllipsoid<3> ellipseRegion(centre, radii);
         ChastePoint<3> myPoint(x, y, z);
 
@@ -188,14 +188,14 @@ private:
         HeartConfig::Instance()->SetUseAbsoluteTolerance(2e-1);
         HeartConfig::Instance()->SetKSPPreconditioner("jacobi");
 
-        HeartConfig::Instance()->SetSimulationDuration(10000);  //ms.
+        HeartConfig::Instance()->SetSimulationDuration(15000);  //ms.
 
         // Output visualization options, we ask for meshalyzer and cmgui
         HeartConfig::Instance()->SetVisualizeWithCmgui(false);
         HeartConfig::Instance()->SetVisualizeWithMeshalyzer(true);
         HeartConfig::Instance()->SetVisualizeWithVtk(false);
 
-        HeartConfig::Instance()->SetOutputDirectory("Stomach3D_rat_4_4_1_dt500ms_10s");
+        HeartConfig::Instance()->SetOutputDirectory("Stomach3D_rat_4_4_1_dt500ms_15s");
         HeartConfig::Instance()->SetOutputFilenamePrefix("results");
 
         HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/rat_4_4_1.1");
@@ -205,8 +205,8 @@ private:
 
         ExtendedBidomainProblem<3> extended_problem(&tissueICCInfo, &tissueSMCInfo);
 
-        HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.003,0.5,0.000003));//(0.03, 3.4, 1.0));
-        HeartConfig::Instance()->SetExtracellularConductivities(Create_c_vector(0.024, 0.024, 0.024));//(0.03, 3.4, 1.0));
+        HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.003,0.000003,0.5));//(0.03, 3.4, 1.0));
+        HeartConfig::Instance()->SetExtracellularConductivities(Create_c_vector(0.003,0.000003,0.5));//(0.03, 3.4, 1.0));
 
         double Am_icc = 2000.0;
         double Am_smc = 1000.0;
@@ -216,7 +216,7 @@ private:
         double G_gap = 20.0;
 
         extended_problem.SetExtendedBidomainParameters(Am_icc,Am_smc, Am_gap, Cm_icc, Cm_smc, G_gap);
-        extended_problem.SetIntracellularConductivitiesForSecondCell(Create_c_vector(0.024, 0.024, 0.024));//(0.02, 3.4, 1.0));
+        extended_problem.SetIntracellularConductivitiesForSecondCell(Create_c_vector(0.003,0.000003,0.5));//(0.02, 3.4, 1.0));
 
         extended_problem.Initialise();
         extended_problem.Solve();
