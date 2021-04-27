@@ -204,8 +204,14 @@ private:
         HeartConfig::Instance()->SetOutputDirectory("Stomach3D_ectopic_dt1s_20s");
         HeartConfig::Instance()->SetOutputFilenamePrefix("results");
 
+<<<<<<< HEAD
+
+        //HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/H09ext_4_4_1.1", cp::media_type::Orthotropic);
+        HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/H09ext_4_4_1.1");
+=======
         HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/H09ext_4_4_1.1", cp::media_type::Orthotropic);
         //HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/H09ext_4_4_1.1");
+>>>>>>> 05940c66c0d77a6bb6c7011f1cbb1f716b050bfe
 
         ICCCellFactory tissueICCInfo;
         SMCCellFactory tissueSMCInfo;
@@ -214,6 +220,11 @@ private:
 
         HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.000003, 0.5, 0.003));//(0.03, 3.4, 1.0));
         HeartConfig::Instance()->SetExtracellularConductivities(Create_c_vector(0.000003, 0.5, 0.003));//(0.03, 3.4, 1.0));
+<<<<<<< HEAD
+        //HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.5, 0.000003, 0.003));//(0.03, 3.4, 1.0));
+        //HeartConfig::Instance()->SetExtracellularConductivities(Create_c_vector(0.5, 0.000003, 0.003));//(0.03, 3.4, 1.0));
+=======
+>>>>>>> 05940c66c0d77a6bb6c7011f1cbb1f716b050bfe
 
         double Am_icc = 2000.0;
         double Am_smc = 1000.0;
@@ -224,9 +235,13 @@ private:
 
         extended_problem.SetExtendedBidomainParameters(Am_icc,Am_smc, Am_gap, Cm_icc, Cm_smc, G_gap);
         extended_problem.SetIntracellularConductivitiesForSecondCell(Create_c_vector(0.000003, 0.5, 0.0003));//(0.02, 3.4, 1.0));
+<<<<<<< HEAD
+        //extended_problem.SetIntracellularConductivitiesForSecondCell(Create_c_vector(0.5, 0.000003, 0.0003));//(0.02, 3.4, 1.0));
+=======
+>>>>>>> 05940c66c0d77a6bb6c7011f1cbb1f716b050bfe
 
         extended_problem.Initialise();
-        extended_problem.Solve();
+/*      extended_problem.Solve();
 
         // CheckPoint the simulation
         FileFinder archive_dir("Extended", RelativeTo::ChasteTestOutput);
