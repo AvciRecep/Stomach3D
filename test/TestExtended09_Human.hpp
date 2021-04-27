@@ -46,7 +46,7 @@ public:
 
     void ReadLaplaceFile()
     {
-        std::ifstream inLaplaceInfo("projects/Stomach3D/src/linear_solution_longi.txt");
+        std::ifstream inLaplaceInfo("projects/Stomach3D/src/H09ext_4_4_1_linear_sol_longi.txt");
         if(!inLaplaceInfo)
         {
             EXCEPTION("Reading laplace solution error");
@@ -105,7 +105,7 @@ public:
       	//double delx = 0.1;
         //double delz = 0.1;
         //double dely = 0.1;
-        
+
         // ChastePoint<3> centre(7.24767, -2.34362, -1.79832); // upper corpus normal pacemaker
         // ChastePoint<3> radii (0.1, 0.1, 0.1);
         ChastePoint<3> centre(0.202278, -8.45307, -5.37112); // ectopic, distal antrum
