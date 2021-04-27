@@ -183,19 +183,19 @@ private:
     void Extended() //throw (Exception)
     {
         HeartConfig::Instance()->Reset();
-        HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,1,1);
+        HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,1,500);
         HeartConfig::Instance()->SetKSPSolver("gmres");
         HeartConfig::Instance()->SetUseAbsoluteTolerance(2e-1);
         HeartConfig::Instance()->SetKSPPreconditioner("jacobi");
 
-        HeartConfig::Instance()->SetSimulationDuration(50);  //ms.
+        HeartConfig::Instance()->SetSimulationDuration(10000);  //ms.
 
         // Output visualization options, we ask for meshalyzer and cmgui
         HeartConfig::Instance()->SetVisualizeWithCmgui(false);
         HeartConfig::Instance()->SetVisualizeWithMeshalyzer(true);
         HeartConfig::Instance()->SetVisualizeWithVtk(false);
 
-        HeartConfig::Instance()->SetOutputDirectory("Stomach3D_rat_4_4_1_dt1ms_50ms");
+        HeartConfig::Instance()->SetOutputDirectory("Stomach3D_rat_4_4_1_dt500ms_10s");
         HeartConfig::Instance()->SetOutputFilenamePrefix("results");
 
         HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/rat_4_4_1.1");
@@ -205,7 +205,7 @@ private:
 
         ExtendedBidomainProblem<3> extended_problem(&tissueICCInfo, &tissueSMCInfo);
 
-        HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.024, 0.024, 0.024));//(0.03, 3.4, 1.0));
+        HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.003,0.5,0.000003));//(0.03, 3.4, 1.0));
         HeartConfig::Instance()->SetExtracellularConductivities(Create_c_vector(0.024, 0.024, 0.024));//(0.03, 3.4, 1.0));
 
         double Am_icc = 2000.0;
