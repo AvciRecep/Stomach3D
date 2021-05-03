@@ -46,7 +46,7 @@ public:
 
     void ReadLaplaceFile()
     {
-        std::ifstream inLaplaceInfo("projects/Stomach3D/src/rat_4_4_1_linear_sol_longi.txt");
+        std::ifstream inLaplaceInfo("projects/Stomach3D/src/rat_16_16_1_linear_sol_longi.txt");
         if(!inLaplaceInfo)
         {
             EXCEPTION("Reading laplace solution error");
@@ -97,14 +97,14 @@ public:
       	cell->SetParameter("V_excitation", -55);
       	cell->SetParameter("live_time", 12000);
 
-        if (V_val > 70)
+        if (V_val > 50)
         {
             return new CellDummyCellFromCellML(mpSolver, mpZeroStimulus);
         }
 
         //ChastePoint<3> centre(7.24767, -2.34362, -1.79832); // for human stomach H09ext file
         ChastePoint<3> centre(0.03399, -1.038, -1.824); // for rat stomach mesh.
-        ChastePoint<3> radii (0.5, 0.5, 0.5);
+        ChastePoint<3> radii (0.1, 0.1, 0.1);
         ChasteEllipsoid<3> ellipseRegion(centre, radii);
         ChastePoint<3> myPoint(x, y, z);
 
@@ -183,30 +183,30 @@ private:
     void Extended() //throw (Exception)
     {
         HeartConfig::Instance()->Reset();
-        HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,1,500);
+        HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,1,1000);
         HeartConfig::Instance()->SetKSPSolver("gmres");
         HeartConfig::Instance()->SetUseAbsoluteTolerance(2e-1);
         HeartConfig::Instance()->SetKSPPreconditioner("jacobi");
 
-        HeartConfig::Instance()->SetSimulationDuration(15000);  //ms.
+        HeartConfig::Instance()->SetSimulationDuration(10000);  //ms.
 
         // Output visualization options, we ask for meshalyzer and cmgui
         HeartConfig::Instance()->SetVisualizeWithCmgui(false);
         HeartConfig::Instance()->SetVisualizeWithMeshalyzer(true);
         HeartConfig::Instance()->SetVisualizeWithVtk(false);
 
-        HeartConfig::Instance()->SetOutputDirectory("Stomach3D_rat_4_4_1_dt500ms_15s");
+        HeartConfig::Instance()->SetOutputDirectory("Stomach3D_rat_16_16_1_dt1s_10s");
         HeartConfig::Instance()->SetOutputFilenamePrefix("results");
 
-        HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/rat_4_4_1.1");
+        HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/rat_16_16_1.1", cp::media_type::Orthotropic);
 
         ICCCellFactory tissueICCInfo;
         SMCCellFactory tissueSMCInfo;
 
         ExtendedBidomainProblem<3> extended_problem(&tissueICCInfo, &tissueSMCInfo);
 
-        HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.003,0.000003,0.5));//(0.03, 3.4, 1.0));
-        HeartConfig::Instance()->SetExtracellularConductivities(Create_c_vector(0.003,0.000003,0.5));//(0.03, 3.4, 1.0));
+        HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.000000003,0.5,0.0000000003));//(0.03, 3.4, 1.0));
+        HeartConfig::Instance()->SetExtracellularConductivities(Create_c_vector(0.000000003,0.5,0.0000000003));//(0.03, 3.4, 1.0));
 
         double Am_icc = 2000.0;
         double Am_smc = 1000.0;
@@ -216,7 +216,7 @@ private:
         double G_gap = 20.0;
 
         extended_problem.SetExtendedBidomainParameters(Am_icc,Am_smc, Am_gap, Cm_icc, Cm_smc, G_gap);
-        extended_problem.SetIntracellularConductivitiesForSecondCell(Create_c_vector(0.003,0.000003,0.5));//(0.02, 3.4, 1.0));
+        extended_problem.SetIntracellularConductivitiesForSecondCell(Create_c_vector(0.000000003,0.5,0.0000000003));//(0.02, 3.4, 1.0));
 
         extended_problem.Initialise();
         extended_problem.Solve();
