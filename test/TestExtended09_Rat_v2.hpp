@@ -72,7 +72,7 @@ public:
         {
             stringstream cordinateLap(line);
             cordinateLap >> dummy1 >> dummy2 >> dummy3 >> lapInfo.V2;
-            LaplaceInfo2.push_back(lapInfo);
+            LaplaceInfo.push_back(lapInfo);
         }
     }
 
