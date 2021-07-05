@@ -88,7 +88,8 @@ public:
         double z = pNode->rGetLocation()[2];
         coordinateV_st info;
         int counter = 0;
-        double V_val = 0;
+        double V_val1 = 0;
+        double V_val2 = 0;
         for(std::vector<coordinateV_st>::iterator itr = LaplaceInfo.begin(); itr!=LaplaceInfo.end();itr++)
         {
             info = *itr;
