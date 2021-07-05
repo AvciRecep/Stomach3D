@@ -211,7 +211,7 @@ private:
         HeartConfig::Instance()->SetVisualizeWithMeshalyzer(true);
         HeartConfig::Instance()->SetVisualizeWithVtk(false);
 
-        HeartConfig::Instance()->SetOutputDirectory("Stomach3D_rat_16_16_1_dt1s_100s_0.000005_0.0005_0.075.v2");
+        HeartConfig::Instance()->SetOutputDirectory("Stomach3D_rat_16_16_1_dt1s_20s_0.000005_0.0005_0.075.v2");
         HeartConfig::Instance()->SetOutputFilenamePrefix("results");
 
         HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/rat_16_16_1.1", cp::media_type::Orthotropic);
