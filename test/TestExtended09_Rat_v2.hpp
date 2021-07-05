@@ -62,19 +62,17 @@ public:
             LaplaceInfo.push_back(lapInfo);
         }
 
-        std::ifstream inLaplaceInfo("projects/Stomach3D/src/rat_16_16_1_linear_sol_circum.txt");
-        if(!inLaplaceInfo)
+        std::ifstream inLaplaceInfo2("projects/Stomach3D/src/rat_16_16_1_linear_sol_circum.txt");
+        if(!inLaplaceInfo2)
         {
             EXCEPTION("Reading laplace solution error");
         }
-        std::string line;
-        coordinateV_st lapInfo;
         double dummy1, dummy2, dummy3;
-        while(std::getline(inLaplaceInfo, line))
+        while(std::getline(inLaplaceInfo2, line))
         {
             stringstream cordinateLap(line);
             cordinateLap >> dummy1 >> dummy2 >> dummy3 >> lapInfo.V2;
-            LaplaceInfo.push_back(lapInfo);
+            LaplaceInfo2.push_back(lapInfo);
         }
     }
 
