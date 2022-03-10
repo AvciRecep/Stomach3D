@@ -1,3 +1,6 @@
 TestExtended09_Human.hpp
 TestExtended09_Rat.hpp
-TestExtended09_Rat_v2.hpp
+TestRatStomach3D_Bidomain.hpp
+TestRatStomach3D_Monodomain.hpp
+TestRatStomach3D_Monodomain_v2.hpp
+TestRatStomach3D_Monodomain_Imtiaz.hpp

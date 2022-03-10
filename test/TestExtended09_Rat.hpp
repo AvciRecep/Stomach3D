@@ -20,7 +20,6 @@
 #include "ArchiveOpener.hpp"
 #include "AbstractCardiacProblem.hpp"
 
-
 using namespace std;
 
 struct coordinateV_st
@@ -46,7 +45,7 @@ public:
 
     void ReadLaplaceFile()
     {
-        std::ifstream inLaplaceInfo("projects/Stomach3D/src/rat_16_16_1_linear_sol_longi.txt");
+        std::ifstream inLaplaceInfo("projects/mesh/Stomach3D/rat_16_16_1_linear_sol_longi_sw.txt");
         if(!inLaplaceInfo)
         {
             EXCEPTION("Reading laplace solution error");
@@ -65,7 +64,6 @@ public:
     //AbstractCardiacCell* CreateCardiacCellForTissueNode(unsigned nodeIndex)
     AbstractCardiacCell* CreateCardiacCellForTissueNode(Node<3>* pNode)
     {
-
         //double x = this->GetMesh()->GetNode(nodeIndex)->rGetLocation()[0];
       	//double y = this->GetMesh()->GetNode(nodeIndex)->rGetLocation()[1];
         //double z = this->GetMesh()->GetNode(nodeIndex)->rGetLocation()[2];
@@ -94,16 +92,16 @@ public:
         }
       	CellICCBioPhy* cell = 0;
       	cell = new CellICCBioPhy(mpSolver, mpZeroStimulus);
-      	cell->SetParameter("V_excitation", -55);
+      	cell->SetParameter("V_excitation", -60);
       	cell->SetParameter("live_time", 12000);
 
-        if (V_val > 50)
+        if (V_val > 99)
         {
             return new CellDummyCellFromCellML(mpSolver, mpZeroStimulus);
         }
 
         //ChastePoint<3> centre(7.24767, -2.34362, -1.79832); // for human stomach H09ext file
-        ChastePoint<3> centre(0.03399, -1.038, -1.824); // for rat stomach mesh.
+        ChastePoint<3> centre(0.04021, -1.491, -2.951); // for rat stomach mesh.
         ChastePoint<3> radii (0.1, 0.1, 0.1);
         ChasteEllipsoid<3> ellipseRegion(centre, radii);
         ChastePoint<3> myPoint(x, y, z);
@@ -125,7 +123,6 @@ public:
     SMCCellFactory() : AbstractCardiacCellFactory<3>()
     {
     }
-
     //AbstractCardiacCell* CreateCardiacCellForTissueNode(unsigned nodeIndex)
     AbstractCardiacCell* CreateCardiacCellForTissueNode(Node<3>* pNode)
     {
@@ -183,19 +180,19 @@ private:
     void Extended() //throw (Exception)
     {
         HeartConfig::Instance()->Reset();
-        HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,1,1000);
+        HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,1,50);
         HeartConfig::Instance()->SetKSPSolver("gmres");
         HeartConfig::Instance()->SetUseAbsoluteTolerance(2e-1);
         HeartConfig::Instance()->SetKSPPreconditioner("jacobi");
 
-        HeartConfig::Instance()->SetSimulationDuration(100000);  //ms.
+        HeartConfig::Instance()->SetSimulationDuration(3000);  //ms.
 
         // Output visualization options, we ask for meshalyzer and cmgui
         HeartConfig::Instance()->SetVisualizeWithCmgui(false);
         HeartConfig::Instance()->SetVisualizeWithMeshalyzer(true);
-        HeartConfig::Instance()->SetVisualizeWithVtk(false);
+        HeartConfig::Instance()->SetVisualizeWithVtk(true);
 
-        HeartConfig::Instance()->SetOutputDirectory("Stomach3D_rat_16_16_1_dt1s_100s_0.000005_0.0005_0.075");
+        HeartConfig::Instance()->SetOutputDirectory("Stomach3D_rat_16_16_1_dt50ms_3s_000001_005_075");
         HeartConfig::Instance()->SetOutputFilenamePrefix("results");
 
         HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/rat_16_16_1.1", cp::media_type::Orthotropic);
@@ -205,8 +202,8 @@ private:
 
         ExtendedBidomainProblem<3> extended_problem(&tissueICCInfo, &tissueSMCInfo);
 
-        HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.000005, 0.005, 0.075));//(0.03, 3.4, 1.0));
-        HeartConfig::Instance()->SetExtracellularConductivities(Create_c_vector(0.000005, 0.005, 0.075));//(0.03, 3.4, 1.0));
+        HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.000001, 0.005, 0.075));//(0.03, 3.4, 1.0));
+        HeartConfig::Instance()->SetExtracellularConductivities(Create_c_vector(0.000001, 0.005, 0.075));//(0.03, 3.4, 1.0));
 
         double Am_icc = 2000.0;
         double Am_smc = 1000.0;
@@ -216,7 +213,7 @@ private:
         double G_gap = 20.0;
 
         extended_problem.SetExtendedBidomainParameters(Am_icc,Am_smc, Am_gap, Cm_icc, Cm_smc, G_gap);
-        extended_problem.SetIntracellularConductivitiesForSecondCell(Create_c_vector(0.000005, 0.005, 0.075));//(0.02, 3.4, 1.0));
+        extended_problem.SetIntracellularConductivitiesForSecondCell(Create_c_vector(0.000001, 0.005, 0.075));//(0.02, 3.4, 1.0));
 
         extended_problem.Initialise();
         extended_problem.Solve();

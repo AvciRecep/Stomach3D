@@ -46,7 +46,7 @@ public:
 
     void ReadLaplaceFile()
     {
-        std::ifstream inLaplaceInfo("projects/Stomach3D/src/H09ext_4_4_1_linear_sol_longi.txt");
+        std::ifstream inLaplaceInfo("projects/mesh/Stomach3D/H09ext_4_4_1_linear_sol_longi.txt");
         if(!inLaplaceInfo)
         {
             EXCEPTION("Reading laplace solution error");
@@ -94,7 +94,7 @@ public:
         }
       	CellICCBioPhy* cell = 0;
       	cell = new CellICCBioPhy(mpSolver, mpZeroStimulus);
-      	cell->SetParameter("V_excitation", -55);
+      	cell->SetParameter("V_excitation", -60);
       	cell->SetParameter("live_time", 12000);
 
         if (V_val > 68)
@@ -106,10 +106,10 @@ public:
         //double delz = 0.1;
         //double dely = 0.1;
 
-        // ChastePoint<3> centre(7.24767, -2.34362, -1.79832); // upper corpus normal pacemaker
-        // ChastePoint<3> radii (0.1, 0.1, 0.1);
-        ChastePoint<3> centre(0.202278, -8.45307, -5.37112); // ectopic, distal antrum
-        ChastePoint<3> radii (0.2, 0.2, 0.2);
+        ChastePoint<3> centre(7.24767, -2.34362, -1.79832); // upper corpus normal pacemaker
+        ChastePoint<3> radii (0.1, 0.1, 0.1);
+        //ChastePoint<3> centre(0.202278, -8.45307, -5.37112); // ectopic, distal antrum
+        //ChastePoint<3> radii (0.2, 0.2, 0.2);
         ChasteEllipsoid<3> ellipseRegion(centre, radii);
         ChastePoint<3> myPoint(x, y, z);
 
@@ -194,18 +194,18 @@ private:
         HeartConfig::Instance()->SetUseAbsoluteTolerance(2e-1);
         HeartConfig::Instance()->SetKSPPreconditioner("jacobi");
 
-        HeartConfig::Instance()->SetSimulationDuration(10000);  //ms.
+        HeartConfig::Instance()->SetSimulationDuration(60000);  //ms.
 
         // Output visualization options, we ask for meshalyzer and cmgui
         HeartConfig::Instance()->SetVisualizeWithCmgui(false);
         HeartConfig::Instance()->SetVisualizeWithMeshalyzer(true);
         HeartConfig::Instance()->SetVisualizeWithVtk(false);
 
-        HeartConfig::Instance()->SetOutputDirectory("Stomach3D_ectopic_dt1s_20s");
+        HeartConfig::Instance()->SetOutputDirectory("Human3D_Antegrade_dt1s_60s");
         HeartConfig::Instance()->SetOutputFilenamePrefix("results");
 
-        //HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/H09ext_4_4_1.1", cp::media_type::Orthotropic);
-        HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/H09ext_4_4_1.1");
+        HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/H09ext_4_4_1.1", cp::media_type::Orthotropic);
+        //HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/H09ext_4_4_1.1");
 
         ICCCellFactory tissueICCInfo;
         SMCCellFactory tissueSMCInfo;
