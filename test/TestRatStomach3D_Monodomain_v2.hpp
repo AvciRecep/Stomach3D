@@ -122,8 +122,8 @@ public:
         HeartConfig::Instance()->SetSurfaceAreaToVolumeRatio(2000);
         HeartConfig::Instance()->SetUseAbsoluteTolerance(1e-3);
         HeartConfig::Instance()->SetCapacitance(3);
-        HeartConfig::Instance()->SetSimulationDuration(20000);  //ms.
-        HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,1,500);
+        HeartConfig::Instance()->SetSimulationDuration(10000);  //ms.
+        HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,1,250);
 
         // Output file/folder
         HeartConfig::Instance()->SetOutputDirectory("TestRatStomach3D_Monodomain_rat_cm_32_32_8_lm_32_32_2_20s_500ms_xi_icc_dummy_0.00001_0.150_0.001");
