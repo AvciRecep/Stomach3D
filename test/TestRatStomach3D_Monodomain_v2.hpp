@@ -122,17 +122,17 @@ public:
         HeartConfig::Instance()->SetSurfaceAreaToVolumeRatio(2000);
         HeartConfig::Instance()->SetUseAbsoluteTolerance(1e-3);
         HeartConfig::Instance()->SetCapacitance(3);
-        HeartConfig::Instance()->SetSimulationDuration(30000);  //ms.
+        HeartConfig::Instance()->SetSimulationDuration(20000);  //ms.
         HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,1,500);
 
         // Output file/folder
-        HeartConfig::Instance()->SetOutputDirectory("TestRatStomach3D_Monodomain_rat_cm_32_32_8_lm_32_32_2_30s_500ms_xi_icc_dummy");
+        HeartConfig::Instance()->SetOutputDirectory("TestRatStomach3D_Monodomain_rat_cm_32_32_8_lm_32_32_2_20s_500ms_xi_icc_dummy_0.00001_0.150_0.001");
         HeartConfig::Instance()->SetOutputFilenamePrefix("results");
 
         ICCCellFactory cell_factory;
         MonodomainProblem<3> monodomain_problem(&cell_factory);
 
-        HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.000005, 0.075, 0.0005));//(0.03, 3.4, 1.0));
+        HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.00001, 0.150, 0.001));//(0.03, 3.4, 1.0));
         //HeartConfig::Instance()->SetExtracellularConductivities(Create_c_vector(0.003, 0.003, 0.000001));//(0.03, 3.4, 1.0));
 
         monodomain_problem.Initialise();
