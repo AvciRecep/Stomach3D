@@ -122,31 +122,18 @@ public:
         HeartConfig::Instance()->SetSurfaceAreaToVolumeRatio(2000);
         HeartConfig::Instance()->SetUseAbsoluteTolerance(1e-3);
         HeartConfig::Instance()->SetCapacitance(3);
-<<<<<<< HEAD
         HeartConfig::Instance()->SetSimulationDuration(20000);  //ms.
         HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,1,250);
 
         // Output file/folder
-        HeartConfig::Instance()->SetOutputDirectory("stomach3d_monodomain_20s_250ms_0.03_0.30_0.03_rat_scaffold_nopylorus_noesophagus_16_16_1.1");
-=======
-        HeartConfig::Instance()->SetSimulationDuration(30000);  //ms.
-        HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,1,250);
-
-        // Output file/folder
-        HeartConfig::Instance()->SetOutputDirectory("TestRatStomach3D_Monodomain_rat_cm_32_32_8_lm_32_32_2_30s_250ms_xi_icc_dummy_0.00001_0.150_0.001");
->>>>>>> c29f65d51d866d78afa9405d8198206c47f2d1cc
+        HeartConfig::Instance()->SetOutputDirectory("test_stomach3d_monodomain_20s_250ms_0.03_0.30_0.03_rat_scaffold_nopylorus_noesophagus_16_16_1.1");
         HeartConfig::Instance()->SetOutputFilenamePrefix("results");
 
         ICCCellFactory cell_factory;
         MonodomainProblem<3> monodomain_problem(&cell_factory);
 
-<<<<<<< HEAD
         //HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.000005, 0.075, 0.0005));//(0.03, 3.4, 1.0));
         HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.03, 0.30, 0.03));
-=======
-        HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.00001, 0.150, 0.001));//(0.03, 3.4, 1.0));
-        //HeartConfig::Instance()->SetExtracellularConductivities(Create_c_vector(0.003, 0.003, 0.000001));//(0.03, 3.4, 1.0));
->>>>>>> c29f65d51d866d78afa9405d8198206c47f2d1cc
 
         monodomain_problem.Initialise();
         monodomain_problem.Solve();

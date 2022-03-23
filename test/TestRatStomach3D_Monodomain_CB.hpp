@@ -90,7 +90,7 @@ public:
 
 	            CellICCBioPhy* cell = new CellICCBioPhy(mpSolver, mpZeroStimulus);
               cell->SetParameter("V_excitation", -60);
-	            cell->SetParameter("live_time", 10000);
+	            cell->SetParameter("live_time", 3000);
 
               if (V_val > 97)
               {
@@ -159,7 +159,7 @@ public:
         HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.03, 0.30, 0.03));
 
         // Output file/folder
-        HeartConfig::Instance()->SetOutputDirectory("test_stomach3d_monodomain_rat_scaffold_16_16_2_25s_250ms_0.03_0.30_0.03");
+        HeartConfig::Instance()->SetOutputDirectory("test_stomach3d_monodomain_rat_scaffold_16_16_2_25s_250ms_0.03_0.30_0.03_ref3s");
         HeartConfig::Instance()->SetOutputFilenamePrefix("results");
 
         monodomain_problem.Initialise();
