@@ -89,8 +89,8 @@ public:
               }
 
 	            CellICCBioPhy* cell = new CellICCBioPhy(mpSolver, mpZeroStimulus);
-              cell->SetParameter("V_excitation", -60);
-	            cell->SetParameter("live_time", 3000);
+              cell->SetParameter("V_excitation", -55);
+	            cell->SetParameter("live_time", 12000);
 
               if (V_val > 97)
               {
@@ -116,23 +116,33 @@ class TestRatStomach3D : public CxxTest::TestSuite
 public:
     void TestStomach3D() //throw (Exception)
     {
-        // Input file
-        HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/rat_scaffold_16_16_2.1", cp::media_type::Orthotropic);
+        ///// Input file
+        string fname = "rat_scaffold_16_16_2.1";
+        HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/"+fname, cp::media_type::Orthotropic);
 
-        // Output visualization options, we ask for meshalyzer and cmgui
+        ///// Simulation settings
+        int sim_dur = 10000; // ms
+        int write_freq = 1000; //ms
+        HeartConfig::Instance()->SetSurfaceAreaToVolumeRatio(2000);
+        HeartConfig::Instance()->SetUseAbsoluteTolerance(1e-3);
+        HeartConfig::Instance()->SetCapacitance(3);
+        HeartConfig::Instance()->SetSimulationDuration(sim_dur);  //ms.
+        HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,1,write_freq);
+
+        ///// Output file/folder
+        string out_path = "test_stomach3d_monodomain_"+fname+"_"+std::to_string(sim_dur)+"ms_"+std::to_string(write_freq)+"ms";
+        //string out_add = "_"+std::to_string(c_fibre)+"_"+std::to_string(c_sheet)+"_"+std::to_string(c_normal)+"_ref10s_v1";
+        string out_add = "_conductivity_test_v0";
+        HeartConfig::Instance()->SetOutputDirectory(out_path+out_add);
+        HeartConfig::Instance()->SetOutputFilenamePrefix("results");
+
+        ///// Output visualization options
         HeartConfig::Instance()->SetVisualizeWithCmgui(false);
         HeartConfig::Instance()->SetVisualizeWithMeshalyzer(true);
         HeartConfig::Instance()->SetVisualizeWithVtk(true);
 
-        // Simulation settings
-        HeartConfig::Instance()->SetSurfaceAreaToVolumeRatio(2000);
-        HeartConfig::Instance()->SetUseAbsoluteTolerance(1e-3);
-        HeartConfig::Instance()->SetCapacitance(3);
-        HeartConfig::Instance()->SetSimulationDuration(25000);  //ms.
-        HeartConfig::Instance()->SetOdePdeAndPrintingTimeSteps(0.1,1,250);
-
-        // Cell factory
-        TrianglesMeshReader<3,3> reader("projects/mesh/Stomach3D/rat_scaffold_16_16_2.1");
+        ///// Cell factory
+        TrianglesMeshReader<3,3> reader("projects/mesh/Stomach3D/"+fname);
         DistributedTetrahedralMesh<3,3> mesh;
         mesh.ConstructFromMeshReader(reader);
 
@@ -154,14 +164,14 @@ public:
         }
         ICCCellFactory cell_factory(iccNodes);
 
-        // MonodomainProblem
+        ///// MonodomainProblem
         MonodomainProblem<3> monodomain_problem(&cell_factory);
-        HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(0.03, 0.30, 0.03));
-
-        // Output file/folder
-        HeartConfig::Instance()->SetOutputDirectory("test_stomach3d_monodomain_rat_scaffold_16_16_2_25s_250ms_0.03_0.30_0.03_ref3s");
-        HeartConfig::Instance()->SetOutputFilenamePrefix("results");
-
+        ///// conductivities
+        double c_fibre = 0.01;
+        double c_sheet = 0.10;
+        double c_normal = 0.01;
+        HeartConfig::Instance()->SetIntracellularConductivities(Create_c_vector(c_fibre, c_sheet, c_normal));
+        ///// Solve
         monodomain_problem.Initialise();
         monodomain_problem.Solve();
     }
