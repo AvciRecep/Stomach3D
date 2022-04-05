@@ -13,7 +13,12 @@
 
 #include "Debug.hpp"
 #include "ArchiveOpener.hpp"
-#include "AbstractCardiacProblem.hpp"
+//#include "AbstractCardiacProblem.hpp"
+#include "AbstractConductivityModifier.hpp"
+#include "OrthotropicConductivityTensors.hpp"
+#include "AbstractConductivityTensors.hpp"
+
+#include "FileFinder.hpp"
 
 #include "../src/CellICCBioPhy.hpp"
 #include "../src/DummyCell.hpp"
@@ -26,6 +31,14 @@ struct coordinateV_st
     double y;
     double z;
     double V;
+};
+
+struct conductivity_st
+{
+    int ElemID;
+    double c_fibre;
+    double c_sheet;
+    double c_normal;
 };
 
 // *************************** CELL FACTORY ************************************* //
@@ -67,7 +80,7 @@ public:
         double y = pNode->rGetLocation()[1];
         double z = pNode->rGetLocation()[2];
         unsigned index = pNode->GetIndex();
-
+        //PRINT_4_VARIABLES(index,x,y,z);
         if (setICCNode.find(index) != setICCNode.end())
         {
               coordinateV_st info;
@@ -112,19 +125,67 @@ public:
     }
 };
 
+// *************************** CONDUCTIVITY TENSOR ************************************* //
+/*class ConductivityTensor : public OrthotropicConductivityTensors<3,3>
+{
+    public:
+      ConductivityTensor(&mesh)
+      void Init();
+};*/
+
+// *************************** CONDUCTIVITY MODIFIER ************************************* //
+class ConductivityModifier : public AbstractConductivityModifier<3,3>
+{
+    private:
+      std::set<unsigned> setICCElements; //Copy list of Indexes with ICC attributes to this class
+      c_matrix<double, 3,3> mSpecialMatrix;
+    public:
+        ConductivityModifier(std::set<unsigned> elementIndexesICC)
+            : AbstractConductivityModifier<3,3>(),
+              setICCElements(elementIndexesICC),
+              mSpecialMatrix(zero_matrix<double>(3,3))
+        {
+        }
+
+        c_matrix<double,3,3>& rCalculateModifiedConductivityTensor(unsigned elementIndex,
+                                                           const c_matrix<double,3,3>& rOriginalConductivity,
+                                                           unsigned domainIndex)
+        {
+          //PRINT_4_VARIABLES(elementIndex,rOriginalConductivity(0,0),rOriginalConductivity(1,1),rOriginalConductivity(2,2));
+          // Conductivities for ICC
+          if (setICCElements.find(elementIndex) != setICCElements.end())
+          {
+            if (domainIndex == 0)
+            {
+                mSpecialMatrix(0,0) = rOriginalConductivity(0,0);
+                mSpecialMatrix(1,1) = rOriginalConductivity(1,1);
+                mSpecialMatrix(2,2) = rOriginalConductivity(2,2);
+            }
+          }
+          else
+          {
+            mSpecialMatrix(0,0) = 0;
+            mSpecialMatrix(1,1) = 0;
+            mSpecialMatrix(2,2) = 0;
+          }
+          return mSpecialMatrix;
+        }
+};
+
 // *************************** SIMULATION ************************************* //
 class TestRatStomach3D : public CxxTest::TestSuite
 {
+
 public:
     void TestStomach3D() //throw (Exception)
     {
         ///// Input file
         string fname = "rat_scaffold_16_16_2.1";
-        HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/"+fname, cp::media_type::Orthotropic);
+        //HeartConfig::Instance()->SetMeshFileName("projects/mesh/Stomach3D/"+fname, cp::media_type::Orthotropic);
 
         ///// Simulation settings
-        int sim_dur = 10000; // ms
-        int write_freq = 500; //ms
+        int sim_dur = 1; // ms
+        int write_freq = 1; //ms
         HeartConfig::Instance()->SetSurfaceAreaToVolumeRatio(2000);
         HeartConfig::Instance()->SetUseAbsoluteTolerance(1e-3);
         HeartConfig::Instance()->SetCapacitance(3);
@@ -134,7 +195,7 @@ public:
 
         ///// Output file/folder
         string out_path = "test_stomach3d_monodomain_"+fname+"_"+std::to_string(sim_dur)+"ms_"+std::to_string(write_freq)+"ms";
-        string out_add = "_conductivity_test_v0";
+        string out_add = "_conductivity_test_v2";
         HeartConfig::Instance()->SetOutputDirectory(out_path+out_add);
         HeartConfig::Instance()->SetOutputFilenamePrefix("results");
         HeartConfig::Instance()->SetOutputUsingOriginalNodeOrdering(true);
@@ -150,6 +211,7 @@ public:
         mesh.ConstructFromMeshReader(reader);
 
         std::set<unsigned> iccNodes;
+        std::set<unsigned> elementIndexesICC;
         // Iterating trough all Elements in the mesh and assigning attributes, conductivities and saving all ICC nodes
         for (DistributedTetrahedralMesh<3,3>::ElementIterator iter = mesh.GetElementIteratorBegin();
                         iter != mesh.GetElementIteratorEnd(); ++iter)
@@ -159,13 +221,7 @@ public:
             // Copy all nodes of the element to the elementIndexesICC list
             if (attribute == 1) // Check if ICC node
             {
-                for(int j = 0; j<=3; ++j)
-                {
-                    iccNodes.insert(iter->GetNodeGlobalIndex(j));
-                }
-            }
-            else
-            {
+                elementIndexesICC.insert(iter->GetIndex());
                 for(int j = 0; j<=3; ++j)
                 {
                     iccNodes.insert(iter->GetNodeGlobalIndex(j));
@@ -174,9 +230,23 @@ public:
         }
         ICCCellFactory cell_factory(iccNodes);
 
+        ///// ConductivityTensor
+        OrthotropicConductivityTensors<3,3> conductivity_tensor;
+        FileFinder file_finder("projects/mesh/Stomach3D/"+fname+".ortho", RelativeTo::ChasteSourceRoot);
+        conductivity_tensor.SetFibreOrientationFile(file_finder);
+        //std::cout<<conductivity_tensor.mUseFibreOrientation<<"\n";
+        conductivity_tensor.Init(&mesh);
+
         ///// MonodomainProblem
         MonodomainProblem<3> monodomain_problem(&cell_factory);
+        monodomain_problem.SetMesh(&mesh);
         monodomain_problem.Initialise();
+
+        ///// Set conductivities
+        MonodomainTissue<3>* p_monodomain_tissue = monodomain_problem.GetMonodomainTissue();
+        ConductivityModifier modifier(elementIndexesICC); // Initialise Conductivity Modifier
+        p_monodomain_tissue->SetConductivityModifier(&modifier);
+
         ///// Solve
         monodomain_problem.Solve();
     }

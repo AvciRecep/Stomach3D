@@ -2,5 +2,5 @@ TestExtended09_Human.hpp
 TestExtended09_Rat.hpp
 TestRatStomach3D_Bidomain.hpp
 TestRatStomach3D_Monodomain_CB.hpp
-TestRatStomach3D_Monodomain_v2.hpp
-TestRatStomach3D_Monodomain_CB_v2.hpp
+TestRatStomach3D_Monodomain_CB_conductivity.hpp
+TestRatStomach3D_Monodomain_CB_conductivity_v2.hpp
