@@ -234,7 +234,6 @@ public:
         OrthotropicConductivityTensors<3,3> conductivity_tensor;
         FileFinder file_finder("projects/mesh/Stomach3D/"+fname+".ortho", RelativeTo::ChasteSourceRoot);
         conductivity_tensor.SetFibreOrientationFile(file_finder);
-        //std::cout<<conductivity_tensor.mUseFibreOrientation<<"\n";
         conductivity_tensor.Init(&mesh);
 
         ///// MonodomainProblem
@@ -244,6 +243,15 @@ public:
 
         ///// Set conductivities
         MonodomainTissue<3>* p_monodomain_tissue = monodomain_problem.GetMonodomainTissue();
+/*
+        double orig_intra_conductivity_0 = 0.0;
+        if (mesh.GetElementIteratorBegin() != mesh.GetElementIteratorEnd())
+        {
+            unsigned first_element = mesh.GetElementIteratorBegin()->GetIndex();
+            orig_intra_conductivity_0 = p_monodomain_tissue->rGetIntracellularConductivityTensor(first_element)(0,0,0);
+            //TS_ASSERT_DELTA(orig_intra_conductivity_0, 0.01, 0.10, 0.01);
+        }
+*/
         ConductivityModifier modifier(elementIndexesICC); // Initialise Conductivity Modifier
         p_monodomain_tissue->SetConductivityModifier(&modifier);
 
